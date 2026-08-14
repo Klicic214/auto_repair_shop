@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import './App.css';
 import Login from './pages/Login';
 import Menu from './components/Menu';
+import Register from './pages/Register';
+import Reset from './pages/ResetPassword';
 
 function App() {
   const Dashboard = () => <div className="container mt-5"><h2>Dashboard & Appointments</h2></div>;
@@ -18,6 +20,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/reset" element={<Reset />}/>
+            <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/work-orders" element={<WorkOrders />} />
