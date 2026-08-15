@@ -7,7 +7,6 @@ export default function Menu() {
         <strong>Auto Repair Shop</strong>
       </div>
       <div style={styles.links}>
-        <Link to="/dashboard" style={styles.link}>Dashboard</Link>
         <Link to="/customers" style={styles.link}>Customers</Link>
         <Link to="/work-orders" style={styles.link}>Work Orders</Link>
         <Link to="/inventory" style={styles.link}>Inventory</Link>

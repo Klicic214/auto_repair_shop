@@ -7,13 +7,13 @@ export default function Login (){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] =useState("");
+    const [message, setMessage] =useState("");
 
     const navigate = useNavigate();
 
     const handleSubmit = async(e) =>{ 
         e.preventDefault();
-        setErrorMessage(""); 
+        setMessage(""); 
 
         try{
             const response = await fetch(`${API_URL}/users/login`, {
@@ -34,10 +34,10 @@ export default function Login (){
             if(response.ok){
                 navigate('/dashboard');
             }else{
-                setErrorMessage(data.message || "Login failed");
+                setMessage(data.message || "Login failed");
             }
         }catch(err){
-            setErrorMessage("Cannot connect to backend server.");
+            setMessage("Cannot connect to backend server.");
 
         }
     }
@@ -49,7 +49,7 @@ export default function Login (){
         <div>
             <h2>Auto Repair Shop Login</h2>
 
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            {message && <p style={{ color: 'red' }}>{errorMessage}</p>}
 
             <form onSubmit={handleSubmit}>
                 <div>
@@ -64,8 +64,10 @@ export default function Login (){
 
 
                 <button type='submit'>Log In</button>
-                <Link to="/register">Register</Link>
+                <p>Forgot your password?</p>
                 <Link to="/reset">Reset</Link>
+                <p>Create an account</p>
+                <Link to="/register">Register</Link>
                 
             </form>
 

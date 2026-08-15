@@ -4,10 +4,10 @@ import Login from './pages/Login';
 import Menu from './components/Menu';
 import Register from './pages/Register';
 import Reset from './pages/ResetPassword';
+import RegCustomers from './pages/RegCustomers';
+import Customers from './pages/Customers';
 
 function App() {
-  const Dashboard = () => <div className="container mt-5"><h2>Dashboard & Appointments</h2></div>;
-  const Customers = () => <div className="container mt-5"><h2>Customers & Vehicles</h2></div>;
   const WorkOrders = () => <div className="container mt-5"><h2>Work Orders & Repairs</h2></div>;
   const Inventory = () => <div className="container mt-5"><h2>Parts Inventory</h2></div>;
 
@@ -22,10 +22,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/reset" element={<Reset />}/>
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/regCustomer" element={<RegCustomers />} />
             <Route path="/work-orders" element={<WorkOrders />} />
             <Route path="/inventory" element={<Inventory />} />
+            
           </Routes>
         </main>
       </div>
