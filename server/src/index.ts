@@ -3,7 +3,8 @@ import express, {Request, Response, NextFunction, urlencoded} from "express";
 import cors from "cors";
 import path from "path";
 import userRouting from "./routes/users.routes.js";
-import costumerRouting from "./routes/customer.routes.js"
+import costumerRouting from "./routes/customer.routes.js";
+import vehicleRouting from "./routes/vehicle.routes.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -21,6 +22,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/users", userRouting);
 app.use("/customers", costumerRouting); 
+app.use("/vehicles", vehicleRouting);
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error(error);
   res.status(500).json({

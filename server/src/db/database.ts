@@ -70,8 +70,8 @@ export const getCustomers= async (): Promise<Customers[]> => {
     return rows;
 }
 
-export async function deleteCustomer(id: number) {
-    const [result] = await pool.query("DELETE FROM customer WHERE id = ?", [id]);
+export async function deleteCustomer(id: number): Promise<ResultSetHeader> {
+    const [result] = await pool.query<ResultSetHeader>("DELETE FROM customer WHERE id = ?", [id]);
     return result;
 }
 
@@ -88,3 +88,51 @@ export const createCustomer= async(
     ); 
     return result;
 }
+
+
+export interface Vehicle extends RowDataPacket {
+  id?: number;
+  license_plate: string;
+  make: string;
+  model: string;
+  manufacturing_year: number;
+  customer_id: number;
+}
+
+
+export const createVehicle = async(
+    licensePlate: string,
+    make: string,
+    model: string,
+    manuFac: number,
+    customerID: number
+): Promise<ResultSetHeader> =>{
+    const[result] = await pool.query<ResultSetHeader>(
+        "INSERT INTO vehicle (license_plate, make, model, manufacturing_year, customer_id) VALUES(?,?,?,?,?)",
+        [licensePlate, make,model,manuFac,customerID]
+
+    );
+    return result
+} 
+
+export const getVehicles = async() : Promise<Vehicle[]> =>{
+const[rows] = await pool.query<Vehicle[]>(
+    "SELECT * FROM vehicle"
+);
+return rows; 
+}
+
+export const getVehiclesById = async(customerID: number): Promise<Vehicle[]> =>{
+    const[rows] = await pool.query<Vehicle[]>(
+        "SELECT * FROM vehicle WHERE customer_id =?", [customerID]
+    );
+    return rows; 
+}
+
+export const deleteVehicle = async (id: number): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "DELETE FROM vehicle WHERE id = ?",
+    [id]
+  );
+  return result;
+};
