@@ -54,3 +54,37 @@ export const resetMechanic = async (email: string, newPassword: string): Promise
 
     return result;
 };
+
+
+export interface Customers extends RowDataPacket{
+    id: number;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    email: string;
+    address: string;
+}
+
+export const getCustomers= async (): Promise<Customers[]> => {
+    const[rows] = await pool.query<Customers[]>("SELECT * FROM customer");
+    return rows;
+}
+
+export async function deleteCustomer(id: number) {
+    const [result] = await pool.query("DELETE FROM customer WHERE id = ?", [id]);
+    return result;
+}
+
+export const createCustomer= async(
+    firstName: string,
+    lastName: string,
+    phone: string,
+    email: string,
+    address: string,
+) : Promise<ResultSetHeader> => {
+    const[result] = await pool.query<ResultSetHeader>(
+        "INSERT INTO customer (first_name, last_name, phone, email, address) VALUES (?,?,?,?,?)", 
+        [firstName, lastName, phone, email, address]
+    ); 
+    return result;
+}
