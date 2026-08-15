@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { getCustomers,createCustomer } from "../db/database.js";
+import { getCustomers,createCustomer, deleteCustomer} from "../db/database.js";
 
 
 const router = Router();
@@ -16,17 +16,20 @@ const showCustomer = async (
             customers
         })
     } catch (err){
-        console.error("Error fetching customer")
-        res.status(400).json({
+        console.error("Error fetching customer", err)
+        res.status(500).json({
             success: false,
             message: "Server error fetching customers",
         })
     }
 };
 
-import { deleteCustomer } from "../db/database.js";
 
-const removeCustomer = async (req: Request, res: Response): Promise<void> => {
+const removeCustomer = async (
+    req: Request, 
+    res: Response
+
+) => {
     try {
         const { id } = req.params;
         await deleteCustomer(Number(id));
@@ -44,7 +47,7 @@ const removeCustomer = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
-router.delete("/:id", removeCustomer);
+
 
 const regCustomers = async (
     req: Request,
@@ -72,7 +75,7 @@ const regCustomers = async (
         const addressVal  = address && address.trim() !== "" ? address : "";
 
         await createCustomer(first_name, last_name,phone,email,addressVal);
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Customer created successfully!",
         });
@@ -99,5 +102,6 @@ const regCustomers = async (
 }
     router.get("/", showCustomer);
     router.post("/", regCustomers);
+    router.delete("/:id", removeCustomer);
 
     export default router;

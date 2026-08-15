@@ -25,7 +25,7 @@ const loginMechanic = async (
 
         const queryRes = await authMechanic(email);
         if(queryRes.length == 0){
-            res.status(401).json({
+            res.status(400).json({
                 success: false,
                 message: "Email is not registered"
             })
@@ -35,7 +35,7 @@ const loginMechanic = async (
 
         const user = queryRes[0];
         if (password != user.password){
-            res.status(401).json({
+            res.status(400).json({
                 success: false,
                 message: "Wrong password",
             })
@@ -44,7 +44,7 @@ const loginMechanic = async (
         }
 
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Login succesfull",
             user: {
@@ -91,7 +91,7 @@ const regMechanic = async (
 
         createMechanics( first_name, last_name, specializationValue, phone, email,password );
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             message: "Mechanic registered successfully!",
         });
@@ -134,7 +134,7 @@ const resMechanic = async(
      const queryRes = await authMechanic(email);
 
      if(queryRes.length == 0){
-        res.status(401).json ({
+        res.status(400).json ({
             success: false,
             message: "Email is not registered"
         })
