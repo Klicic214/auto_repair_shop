@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Reset from './pages/ResetPassword';
 import RegCustomers from './pages/RegCustomers';
 import Customers from './pages/Customers';
+import Vehicles from './pages/Vehicles';
+import RegVehicle from './pages/RegVehicle';
 
 function App() {
   const WorkOrders = () => <div className="container mt-5"><h2>Work Orders & Repairs</h2></div>;
@@ -24,6 +26,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/regCustomer" element={<RegCustomers />} />
+            <Route path="/vehicles" element={<Vehicles />} />
+            <Route path="/regVehicle" element={<RegVehicle />} />
             <Route path="/work-orders" element={<WorkOrders />} />
             <Route path="/inventory" element={<Inventory />} />
             
