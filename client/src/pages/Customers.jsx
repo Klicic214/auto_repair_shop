@@ -13,7 +13,7 @@ export default function Customers() {
     try {
       const response = await fetch(`${API_URL}/customers`);
       const data = await response.json();
-      if (response.ok) {
+      if (data.success) {
         setCustomers(data.customers || []);
       } else {
         setErrorMessage(data.message || "Failed to fetch customers");
@@ -34,7 +34,7 @@ export default function Customers() {
       });
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         setCustomers((prev) => prev.filter((c) => c.id !== id));
       } else {
         alert(data.message || "Failed to delete customer");
@@ -94,6 +94,11 @@ export default function Customers() {
                     <button onClick={() => navigate(`/regVehicle?customerId=${c.id}`)} style={styles.vehicleButton}>
                         + Vehicle
                         </button>
+
+                        <button onClick={() => navigate(`/updCustomer?editId=${c.id}`)} style={styles.editBtn}>
+                        Edit
+                        </button>
+
                     <button onClick={() => handleDelete(c.id)} style={styles.deleteButton}>
                       Delete
                     </button>

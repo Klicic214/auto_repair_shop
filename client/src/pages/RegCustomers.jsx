@@ -38,7 +38,7 @@ export default function registerCostumer(){
 
             const data = await response.json();
             
-            if(response.ok){
+            if(data.success){
                 setMessage("Succesful");
                 navigate("/customers")
             }else{
