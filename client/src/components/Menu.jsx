@@ -9,7 +9,7 @@ export default function Menu() {
       <div style={styles.links}>
         <Link to="/customers" style={styles.link}>Customers</Link>
         <Link to ="/vehicles" style={styles.link}> Vehicles</Link>
-        <Link to="/work-orders" style={styles.link}>Work Orders</Link>
+        <Link to="/appointments" style={styles.link}>Appointments</Link>
         <Link to="/inventory" style={styles.link}>Inventory</Link>
       </div>
     </nav>
