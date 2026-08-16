@@ -88,11 +88,7 @@ export default function RegVehicle() {
             <button type="submit" disabled={loading} style={styles.submitBtn}>
               {loading ? "Registering..." : "Register Vehicle"}
             </button>
-            <button
-              type="button"
-              onClick={() => navigate("/customers")}
-              style={styles.cancelBtn}
-            >
+            <button type="button"onClick={() => navigate("/customers")} style={styles.cancelBtn}>
               Cancel
             </button>
           </div>

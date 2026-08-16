@@ -54,7 +54,7 @@ export default function Vehicles() {
     <div style={styles.container}>
       <h2>Vehicle Inventory</h2>
 
-      <input type="text" laceholder="Search by make, model, or license plate..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={styles.searchInput}/>
+      <input type="text" placeholder="Search by model, or license plate..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={styles.searchInput}/>
 
       {loading ? (
         <p>Loading vehicles...</p>
