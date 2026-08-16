@@ -17,7 +17,7 @@ export default function Appointments() {
     try {
       const response = await fetch(`${API_URL}/appointments`); 
       const data = await response.json();
-      if (response.ok) {
+      if (data.success) {
         setAppointments(data.data || []);
       } else {
         setMessage(data.message || "Failed to fetch appointments");
@@ -33,7 +33,7 @@ export default function Appointments() {
     try {
       const response = await fetch(`${API_URL}/vehicles`); 
       const data = await response.json();
-      if (response.ok) {
+      if (data.success) {
         setVehicles(data.vehicles || []);
       }
     } catch (err) {
@@ -70,7 +70,7 @@ export default function Appointments() {
       });
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         setMessage("Appointment scheduled successfully!");
         setScheduledDate("");
         setReportIssue("");
@@ -95,7 +95,7 @@ export default function Appointments() {
       });
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         fetchAppointments();
       } else {
         alert(data.message || "Failed to update status");
@@ -115,7 +115,7 @@ export default function Appointments() {
       });
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         setAppointments((prev) => prev.filter((app) => app.id !== id));
       } else {
         alert(data.message || "Failed to delete appointment");

@@ -27,7 +27,7 @@ export default function Login() {
 
             const data = await response.json();
 
-            if (response.ok) {
+            if (data.success) {
                 navigate('/customers');
             } else {
                 setMessage(data.message || "Login failed");
@@ -76,7 +76,7 @@ const styles = {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "80vh",
+        minHeight: "80%",
         padding: "20px"
     },
     card: {

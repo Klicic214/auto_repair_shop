@@ -37,7 +37,7 @@ export default function Register() {
 
             const data = await response.json();
 
-            if (response.ok) {
+            if (data.success) {
                 navigate('/customers');
             } else {
                 setErrorMessage(data.message || "Registration failed");

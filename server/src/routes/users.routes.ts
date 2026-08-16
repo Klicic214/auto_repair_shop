@@ -142,7 +142,14 @@ const resMechanic = async(
         return;
      }
 
-     await resetMechanic(email,password, newPassword) 
+     const result = await resetMechanic(email,password, newPassword) 
+    if (result.affectedRows === 0) {
+        res.status(400).json({
+        success: false,
+        message: "Current password is incorrect",
+    });
+    return;
+}
 
      res.status(200).json({
         success: true,
