@@ -6,6 +6,8 @@ import userRouting from "./routes/users.routes.js";
 import costumerRouting from "./routes/customer.routes.js";
 import vehicleRouting from "./routes/vehicle.routes.js";
 import appointmentRouting from "./routes/appointment.routes.js";
+import partsRouting from "./routes/parts.routes.js"
+import supplierRoutimg from "./routes/supplier.routes.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -25,6 +27,8 @@ app.use("/users", userRouting);
 app.use("/customers", costumerRouting); 
 app.use("/vehicles", vehicleRouting);
 app.use("/appointments", appointmentRouting);
+app.use("/parts", partsRouting);
+app.use("/suppliers", supplierRoutimg)
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error(error);
   res.status(500).json({
