@@ -9,9 +9,14 @@ import Customers from './pages/Customers';
 import Vehicles from './pages/Vehicles';
 import RegVehicle from './pages/RegVehicle';
 import Appointments from './pages/Appointment';
+import Parts from "./pages/Parts";
+import RegParts from "./pages/RegParts";
+import Suppliers from './pages/Suppliers';;
+import UpdateCustomer from './pages/UpdateCustomer';
+import UpdateVehicle from './pages/UpdateVehicle';
+
 
 function App() {
-  const Inventory = () => <div className="container mt-5"><h2>Parts Inventory</h2></div>;
 
   return (
     <Router>
@@ -20,17 +25,23 @@ function App() {
         <Menu />
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/reset" element={<Reset />}/>
+            
             <Route path="/register" element={<Register />} />
             <Route path="/customers" element={<Customers />} />
             <Route path="/regCustomer" element={<RegCustomers />} />
+            <Route path="/updCustomer" element={<UpdateCustomer />} />
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/regVehicle" element={<RegVehicle />} />
+            <Route path="/updVehicle" element={<UpdateVehicle />} />
             <Route path="/appointments" element={<Appointments />} />
-            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/parts" element={<Parts />} /> 
+            <Route path="/regParts" element={<RegParts />}/>
+            <Route path="/suppliers" element={<Suppliers />} /> 
+
             
+            <Route path="/" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/reset" element={<Reset />}/>
           </Routes>
         </main>
       </div>

@@ -1,17 +1,25 @@
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from "react-router-dom";
 
 export default function Menu() {
+  const location = useLocation();
+
+  const hideOnPaths = ["/", "/login", "/register", "/reset"];
+
+  if (hideOnPaths.includes(location.pathname)) {
+    return null;
+  }
+
   return (
     <nav style={styles.sidebar}>
-      <div style={styles.brand}>
-        <strong>Auto Repair Shop</strong>
-      </div>
-      <div style={styles.links}>
-        <Link to="/customers" style={styles.link}>Customers</Link>
-        <Link to ="/vehicles" style={styles.link}> Vehicles</Link>
-        <Link to="/appointments" style={styles.link}>Appointments</Link>
-        <Link to="/inventory" style={styles.link}>Inventory</Link>
-      </div>
+      <h2>Auto Repair Shop</h2>
+      <Link to="/customers" style={styles.link}>Customers</Link>
+      <Link to="/vehicles" style={styles.link}>Vehicles</Link>
+      <Link to="/appointments" style={styles.link}>Appointments</Link>
+      <Link to="/parts" style={styles.link}>Inventory</Link>
+      <Link to="/suppliers" style={styles.link}>Suppliers</Link>
+
+
+      <Link style={styles.link} to="/"> Log out</Link>
     </nav>
   );
 }
