@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, Router } from "express";
-import { createVehicle, getVehicles, getVehiclesById, deleteVehicle } from "../db/database";
+import { createVehicle, getVehicles, getVehiclesById, deleteVehicle } from "../db/database.js";
 
 
 const router = Router();

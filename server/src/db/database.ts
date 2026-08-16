@@ -46,10 +46,10 @@ export const authMechanic = async (email: string): Promise<Mechanic[]> =>{
     return rows;
 };
 
-export const resetMechanic = async (email: string, newPassword: string): Promise<ResultSetHeader> => {
+export const resetMechanic = async (email: string, password: string, newPassword: string): Promise<ResultSetHeader> => {
     const [result] = await pool.query<ResultSetHeader>(
-        "UPDATE mechanic SET password = ? WHERE email = ?", 
-        [newPassword, email]
+        "UPDATE mechanic SET password = ? WHERE email = ? AND password = ?", 
+        [newPassword, email,password]
     );
 
     return result;
@@ -132,6 +132,52 @@ export const getVehiclesById = async(customerID: number): Promise<Vehicle[]> =>{
 export const deleteVehicle = async (id: number): Promise<ResultSetHeader> => {
   const [result] = await pool.query<ResultSetHeader>(
     "DELETE FROM vehicle WHERE id = ?",
+    [id]
+  );
+  return result;
+};
+
+export interface Appointment extends RowDataPacket {
+  id: number;
+  scheduled_date: string;
+  report_issue: string | null;
+  status: 'Scheduled' | 'In Progress' | 'Completed' | 'Cancelled';
+  vehicle_id: number;
+}
+
+export const getAppointments = async (): Promise<Appointment[]> => {
+  const [rows] = await pool.query<Appointment[]>(
+    "SELECT a.*, v.make, v.model, v.license_plate FROM appointment a JOIN vehicle v ON a.vehicle_id = v.id"
+  );
+  return rows;
+};
+
+export const createAppointment = async (
+  scheduledDate: string,
+  reportIssue: string,
+  vehicleID: number
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "INSERT INTO appointment (scheduled_date, report_issue, status, vehicle_id) VALUES (?, ?, 'Scheduled', ?)",
+    [scheduledDate, reportIssue, vehicleID]
+  );
+  return result;
+};
+
+export const updateAppointmentStatus = async (
+  id: number,
+  status: string
+): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "UPDATE appointment SET status = ? WHERE id = ?",
+    [status, id]
+  );
+  return result;
+};
+
+export const deleteAppointment = async (id: number): Promise<ResultSetHeader> => {
+  const [result] = await pool.query<ResultSetHeader>(
+    "DELETE FROM appointment WHERE id = ?",
     [id]
   );
   return result;
