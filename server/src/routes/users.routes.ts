@@ -89,7 +89,7 @@ const regMechanic = async (
 
         const specializationValue = specialization && specialization.trim() !== "" ? specialization : "";
 
-        createMechanics( first_name, last_name, specializationValue, phone, email,password );
+        await createMechanics( first_name, last_name, specializationValue, phone, email,password );
 
         res.status(200).json({
             success: true,
@@ -118,12 +118,13 @@ const resMechanic = async(
     res: Response,
     next: NextFunction,
 ) =>{ try {
-    const {email, newPassword}= req.body as{
-        email?: string;
-        newPassword?: string
+    const {email, password, newPassword}= req.body as {
+        email: string;
+        password: string;
+        newPassword: string
     };
 
-    if(!email || !newPassword){
+    if(!email || !password || !newPassword){
         res.status(400).json({
             success: false,
             message: "Please fill in all required fields."
@@ -141,7 +142,7 @@ const resMechanic = async(
         return;
      }
 
-     await resetMechanic(email,newPassword) 
+     await resetMechanic(email,password, newPassword) 
 
      res.status(200).json({
         success: true,
