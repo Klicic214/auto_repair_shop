@@ -38,7 +38,7 @@ export default function RegVehicle() {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         navigate("/vehicles");
       } else {
         setMessage(data.message || "Failed to register vehicle.");

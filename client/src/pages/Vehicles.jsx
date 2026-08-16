@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "../config/api";
 
 export default function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchVehicles();
@@ -31,7 +34,7 @@ export default function Vehicles() {
       });
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         setVehicles((prev) => prev.filter((v) => v.id !== id));
       } else {
         alert(data.message || "Failed to delete vehicle");
@@ -46,7 +49,8 @@ export default function Vehicles() {
     const term = searchTerm.toLowerCase();
     return (
       vehicle.model?.toLowerCase().includes(term) ||
-      vehicle.license_plate?.toLowerCase().includes(term)
+      vehicle.license_plate?.toLowerCase().includes(term) ||
+      vehicle.make?.toLowerCase().includes(term)
     );
   });
 
@@ -54,7 +58,7 @@ export default function Vehicles() {
     <div style={styles.container}>
       <h2>Vehicle Inventory</h2>
 
-      <input type="text" placeholder="Search by model, or license plate..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={styles.searchInput}/>
+      <input type="text" placeholder="Search by brand, model, or license plate..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={styles.searchInput}/>
 
       {loading ? (
         <p>Loading vehicles...</p>
@@ -63,7 +67,7 @@ export default function Vehicles() {
           <thead>
             <tr style={styles.tableHeaderRow}>
               <th>License Plate</th>
-              <th>Make</th>
+              <th>Brand</th>
               <th>Model</th>
               <th>Year</th>
               <th>Customer ID</th>
@@ -79,9 +83,13 @@ export default function Vehicles() {
                 <td>{v.manufacturing_year}</td>
                 <td>{v.customer_id}</td>
                 <td>
+                    <button onClick={() => navigate(`/updVehicle?editId=${v.id}`)} style={styles.editBtn}>
+                        Edit
+                        </button>
                   <button onClick={() => handleDelete(v.id)}style={styles.deleteBtn}>
                     Delete
                   </button>
+
                 </td>
               </tr>
             ))}
