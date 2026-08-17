@@ -54,7 +54,7 @@ export default function UpdVehicle() {
 
             const data = await response.json();
 
-            if (data.sucess) {
+            if (data.success) {
                 navigate("/vehicles");
             } else {
                 setMessage(data.message || "Failed to update vehicle.");

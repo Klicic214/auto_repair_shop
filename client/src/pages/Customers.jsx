@@ -155,7 +155,9 @@ const styles = {
   tableHeaderRow: {
     borderBottom: "1px solid #334155",
     textAlign: "left",
+    tableLayout: "fixed"
   },
+  
   th: {
     padding: "12px 8px",
     color: "#94a3b8",
