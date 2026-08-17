@@ -1,143 +1,186 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../config/api";
 
-export default function Vehicles() {
-  const [vehicles, setVehicles] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
+export default function UpdCustomer() {
+    const [searchParams] = useSearchParams();
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [email, setEmail] = useState("");
+    const [address, setAddress] = useState("");
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchVehicles();
-  }, []);
-
-  const fetchVehicles = async () => {
-    try {
-      const response = await fetch(`${API_URL}/vehicles`);
-      const data = await response.json();
-      setVehicles(data.vehicles || []);
-    } catch (error) {
-      console.error("Failed to fetch vehicles:", error);
-    } finally {
-      setLoading(false);
+    const editId = searchParams.get("editId");
+    const navigate = useNavigate();
+useEffect(() => {
+    if (!editId) {
+        navigate("/customers");
+        return;
     }
-  };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this vehicle?")) return;
+    const fetchCustomer = async () => {
+        try {
+            const response = await fetch(`${API_URL}/customers/${editId}`);
+            const data = await response.json();
+            if (data.success) {
+                const c = data.customer;
+                setFirstName(c.first_name);
+                setLastName(c.last_name);
+                setPhone(c.phone);
+                setEmail(c.email);
+                setAddress(c.address || "");
+            } else {
+                setMessage("Failed to load customer data.");
+            }
+        } catch (err) {
+            setMessage("Cannot connect to server.");
+        }
+    };
 
-    try {
-      const response = await fetch(`${API_URL}/vehicles/${id}`, {
-        method: "DELETE",
-      });
-      const data = await response.json();
+    fetchCustomer();
+}, [editId]);
 
-      if (data.success) {
-        setVehicles((prev) => prev.filter((v) => v.id !== id));
-      } else {
-        alert(data.message || "Failed to delete vehicle");
-      }
-    } catch (err) {
-      console.error("Error deleting vehicle:", err);
-      alert("Error connecting to server.");
-    }
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setMessage("");
 
-  const filteredVehicles = vehicles.filter((vehicle) => {
-    const term = searchTerm.toLowerCase();
+        try {
+            const response = await fetch(`${API_URL}/customers/${editId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    first_name: firstName,
+                    last_name: lastName,
+                    phone: phone,
+                    email: email,
+                    address: address
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                navigate("/customers");
+            } else {
+                setMessage(data.message || "Failed to update customer.");
+            }
+        } catch (err) {
+            setMessage("Cannot connect to server.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-      vehicle.model?.toLowerCase().includes(term) ||
-      vehicle.license_plate?.toLowerCase().includes(term) ||
-      vehicle.make?.toLowerCase().includes(term)
-    );
-  });
+        <div style={styles.container}>
+            <div style={styles.card}>
+                <h2 style={styles.title}>Edit Customer</h2>
 
-  return (
-    <div style={styles.container}>
-      <h2>Vehicle Inventory</h2>
+                {message && <p style={styles.error}>{message}</p>}
 
-      <input type="text" placeholder="Search by brand, model, or license plate..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={styles.searchInput}/>
+                <form onSubmit={handleSubmit} style={styles.form}>
+                    <div style={styles.field}>
+                        <label style={styles.label}>First Name</label>
+                        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} required style={styles.input} />
+                    </div>
+                    <div style={styles.field}>
+                        <label style={styles.label}>Last Name</label>
+                        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} required style={styles.input} />
+                    </div>
+                    <div style={styles.field}>
+                        <label style={styles.label}>Phone</label>
+                        <input type="text" value={phone} onChange={(e) => setPhone(e.target.value)} required style={styles.input} />
+                    </div>
+                    <div style={styles.field}>
+                        <label style={styles.label}>Email</label>
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required style={styles.input} />
+                    </div>
+                    <div style={styles.field}>
+                        <label style={styles.label}>Address (optional)</label>
+                        <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} style={styles.input} />
+                    </div>
 
-      {loading ? (
-        <p>Loading vehicles...</p>
-      ) : (
-        <table style={styles.table}>
-          <thead>
-            <tr style={styles.tableHeaderRow}>
-              <th>License Plate</th>
-              <th>Brand</th>
-              <th>Model</th>
-              <th>Year</th>
-              <th>Customer ID</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredVehicles.map((v) => (
-              <tr key={v.id} style={styles.tableRow}>
-                <td>{v.license_plate}</td>
-                <td>{v.make}</td>
-                <td>{v.model}</td>
-                <td>{v.manufacturing_year}</td>
-                <td>{v.customer_id}</td>
-                <td>
-                    <button onClick={() => navigate(`/updVehicle?editId=${v.id}`)} style={styles.editBtn}>
-                        Edit
+                    <div style={styles.buttonGroup}>
+                        <button type="submit" disabled={loading} style={styles.submitBtn}>
+                        Save Changes
                         </button>
-                  <button onClick={() => handleDelete(v.id)}style={styles.deleteBtn}>
-                    Delete
-                  </button>
-
-                </td>
-              </tr>
-            ))}
-            {filteredVehicles.length === 0 && (
-              <tr>
-                <td colSpan={6} style={styles.emptyCell}>
-                  No vehicles found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )}
-    </div>
-  );
+                        <button type="button" onClick={() => navigate("/customers")} style={styles.cancelBtn}>
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
 }
 
 const styles = {
-  container: {
-    padding: "20px",
-  },
-  searchInput: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "20px",
-    fontSize: "16px",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-  tableHeaderRow: {
-    textAlign: "left",
-    borderBottom: "2px solid #ccc",
-  },
-  tableRow: {
-    borderBottom: "1px solid #eee",
-  },
-  deleteBtn: {
-    backgroundColor: "#dc2626",
-    color: "white",
-    border: "none",
-    padding: "6px 12px",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
-  emptyCell: {
-    padding: "20px",
-    textAlign: "center",
-  },
+    container: {
+        padding: "24px",
+        display: "flex",
+        justifyContent: "center",
+        color: "#fff",
+    },
+    card: {
+        background: "#1e293b",
+        padding: "24px",
+        borderRadius: "8px",
+        width: "100%",
+        maxWidth: "500px",
+    },
+    title: {
+        marginBottom: "20px",
+    },
+    form: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "16px",
+    },
+    field: {
+        display: "flex",
+        flexDirection: "column",
+        gap: "6px",
+    },
+    label: {
+        fontSize: "14px",
+        color: "#94a3b8",
+    },
+    input: {
+        padding: "10px",
+        borderRadius: "4px",
+        border: "1px solid #334155",
+        backgroundColor: "#0f172a",
+        color: "#fff",
+        fontSize: "15px",
+    },
+    buttonGroup: {
+        display: "flex",
+        gap: "12px",
+        marginTop: "12px",
+    },
+    submitBtn: {
+        flex: 1,
+        padding: "10px",
+        backgroundColor: "#2563eb",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+        fontWeight: "bold",
+    },
+    cancelBtn: {
+        padding: "10px 16px",
+        backgroundColor: "#475569",
+        color: "#fff",
+        border: "none",
+        borderRadius: "4px",
+        cursor: "pointer",
+    },
+    error: {
+        color: "#ef4444",
+        marginBottom: "16px",
+    },
 };

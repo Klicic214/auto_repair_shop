@@ -22,7 +22,7 @@ export default function UpdVehicle() {
         fetch(`${API_URL}/vehicles/${editId}`)
             .then(r => r.json())
             .then(data => {
-                if (data.ok) {
+                if (data.success) {
                     const v = data.vehicle;
                     setLicensePlate(v.license_plate);
                     setMake(v.make);
