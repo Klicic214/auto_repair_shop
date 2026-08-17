@@ -10,18 +10,16 @@ import partsRouting from "./routes/parts.routes.js"
 import supplierRoutimg from "./routes/supplier.routes.js";
 
 const app = express();
-const port = Number(process.env.PORT) || 5000;
+const port = Number(process.env.PORT) || 3000;
+
+const reactBuildPath = path.join(__dirname, '../dist');
 
 app.use(cors());
 app.use(express.json());
 app.use(urlencoded({extended: false}));
 
 console.log("Curent dir: " + __dirname);
-
-app.use(express.static(path.join(__dirname, "frontend-build")));
-app.get("/", (req: Request, res: Response) => {
-    res.sendFile(path.join(__dirname,"index.html"))
-})
+app.use(express.static(reactBuildPath));
 
 app.use("/users", userRouting);
 app.use("/customers", costumerRouting); 
@@ -29,6 +27,14 @@ app.use("/vehicles", vehicleRouting);
 app.use("/appointments", appointmentRouting);
 app.use("/parts", partsRouting);
 app.use("/suppliers", supplierRoutimg)
+
+
+app.get("/*splat", (req: Request, res: Response) => {
+    res.sendFile(path.join(reactBuildPath,"index.html"))
+})
+
+
+
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error(error);
   res.status(500).json({
