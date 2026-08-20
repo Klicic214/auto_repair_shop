@@ -21,12 +21,12 @@ app.use(urlencoded({extended: false}));
 console.log("Curent dir: " + __dirname);
 app.use(express.static(reactBuildPath));
 
-app.use("/users", userRouting);
-app.use("/customers", costumerRouting); 
-app.use("/vehicles", vehicleRouting);
-app.use("/appointments", appointmentRouting);
-app.use("/parts", partsRouting);
-app.use("/suppliers", supplierRoutimg)
+app.use("/api/users", userRouting);
+app.use("/api/customers", costumerRouting); 
+app.use("/api/vehicles", vehicleRouting);
+app.use("/api/appointments", appointmentRouting);
+app.use("/api/parts", partsRouting);
+app.use("/api/suppliers", supplierRoutimg)
 
 
 app.get("/*splat", (req: Request, res: Response) => {
