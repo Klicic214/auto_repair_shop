@@ -1,1 +1,1 @@
-export const API_URL = "http://localhost:30057";
+export const API_URL = import.meta.env.PROD ? "" : "http://localhost:30057";

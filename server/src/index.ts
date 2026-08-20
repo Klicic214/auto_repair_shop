@@ -12,7 +12,7 @@ import supplierRoutimg from "./routes/supplier.routes.js";
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 
-const reactBuildPath = path.join(__dirname, '../dist');
+const reactBuildPath = path.join(__dirname, '../../client/dist');
 
 app.use(cors());
 app.use(express.json());
